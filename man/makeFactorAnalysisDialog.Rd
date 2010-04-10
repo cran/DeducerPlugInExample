@@ -3,9 +3,7 @@
 \alias{makeListExampleDialog}
 \alias{.factorAnalysisCheckFunction}
 \alias{.factorAnalysisRunFunction}
-\alias{getFactorAnalysisDialog}
-\alias{getScatterPlotDialog}
-\alias{getListExampleDialog}
+\alias{makeScatterPlotDialog}
 \title{
   makeFactorAnalysisDialog
 }
@@ -14,10 +12,8 @@
 }
 \usage{
 makeFactorAnalysisDialog()
-getFactorAnalysisDialog()
 makeListExampleDialog()
-getListExampleDialog()
-getScatterPlotDialog()
+makeScatterPlotDialog()
 .factorAnalysisRunFunction(state)
 .factorAnalysisCheckFunction(state)
 }

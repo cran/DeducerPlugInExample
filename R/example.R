@@ -69,16 +69,6 @@ makeFactorAnalysisDialog <- function(){
 
 
 
-getFactorAnalysisDialog <- function(){
-	if(!exists(".factorAnalysisDialog")){
-		ex <- as.environment(match("package:DeducerPlugInExample", search()))
-		#make factor analysis dialog
-		.factorAnalysisDialog <- makeFactorAnalysisDialog()
-		assign(".factorAnalysisDialog",.factorAnalysisDialog,ex)		
-	}
-	return(.factorAnalysisDialog)
-}
-
 makeListExampleDialog <-function(){
 	leftList <- new(ListWidget,"Left hand list",c("Item 1","Item 2","Item 3","Item 4"))
 	setSize(leftList,150,210)
@@ -98,36 +88,33 @@ makeListExampleDialog <-function(){
 	return(dialog)
 }
 
-getListExampleDialog <- function(){
-	if(!exists(".listExampleDialog")){
-		ex <- as.environment(match("package:DeducerPlugInExample", search()))
-		dialog <- makeListExampleDialog()
-		assign(".listExampleDialog",dialog,ex)	
-	}
-	return(.listExampleDialog)
-}
 
-getScatterPlotDialog <- function(){
-	if(!exists(".scatterPlotDialog")){
-		ex <- as.environment(match("package:DeducerPlugInExample", search()))
-		#make scatter plot dialog
-		PlotRDialog <- J("example.PlotRDialog")
-		.scatterPlotDialog <- new(PlotRDialog)
-		assign(".scatterPlotDialog",.scatterPlotDialog,ex)
-	}
+makeScatterPlotDialog <- function(){
+	PlotRDialog <- J("example.PlotRDialog")
+	.scatterPlotDialog <- new(PlotRDialog)
 	return(.scatterPlotDialog)
 }
 
-.First.lib <- function(libname, pkgname) { 
+.onLoad <- function(libname, pkgname) { 
+	
+	#if deducer gui is not running, do minimal load
+	deducerLoaded <- try(.deducer == .jnull(),silent=TRUE)
+	if(inherits(deducerLoaded,"try-error") || deducerLoaded)
+		return(NULL)
+	
 	#loads example.jar
 	.jpackage(pkgname,lib.loc=libname)
 	
+	.registerDialog("Factor Analysis", makeFactorAnalysisDialog)
+	.registerDialog("Scatter Plot", makeScatterPlotDialog)
+	.registerDialog("List Example", makeListExampleDialog)
+	
 	#add menu items
 	deducer.addMenu("Example")
-	deducer.addMenuItem("Factor Analysis",,"getFactorAnalysisDialog()$run()","Example")
-	deducer.addMenuItem("Scatter Plot",,"getScatterPlotDialog()$run()","Example")
+	deducer.addMenuItem("Factor Analysis",,".getDialog('Factor Analysis')$run()","Example")
+	deducer.addMenuItem("Scatter Plot",,".getDialog('Scatter Plot')$run()","Example")
 	deducer.addMenuItem("Widget display",,"J('example.ExampleDialog')$run()","Example")
-	deducer.addMenuItem("List Example",,"getListExampleDialog()$run()","Example")
+	deducer.addMenuItem("List Example",,".getDialog('List Example')$run()","Example")
 	if(.windowsGUI){
 		winMenuAdd("Example")
 		winMenuAddItem("Example", "Factor Analysis", "deducer('Factor Analysis')")

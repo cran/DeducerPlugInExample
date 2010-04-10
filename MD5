@@ -1,0 +1,11 @@
+8d2f6cc408d3002c3118f8dfc31534a7 *DESCRIPTION
+ea78f0904e11e165d65deca2c6b261a2 *NAMESPACE
+699d3e914704ea37f4bdba2ee916ca6e *R/example.R
+ca417a6114d58ac0671dcf1def6f7d3d *inst/java/example.jar
+461a68566b8f8516c75a938574389b71 *inst/java/src/JGR.jar
+2dbe4c165a472a0ed072b5a9c65f84ac *inst/java/src/deducer.jar
+8f2bfb6b74d98a2b27d33512a24e0bc8 *inst/java/src/example/ExampleDialog.java
+aeaa52e494b78cba2d5045f8c0b1a0ee *inst/java/src/example/PlotRDialog.java
+7407c3d361efe2612efc7387e369e1d3 *inst/java/src/mkjar
+05378a014a639620c696ad476381e23f *inst/java/src/mkjar.bat
+3c36f9d43a99fb04ec4b18de9597f7c2 *man/makeFactorAnalysisDialog.Rd
