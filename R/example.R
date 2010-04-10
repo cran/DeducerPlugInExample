@@ -2,35 +2,6 @@
 # Author: Ian Fellows
 ###############################################################################
 
-makeFactorAnalysisDialog <- function(){
-	#make dialog
-	dialog <- new(SimpleRDialog)
-	dialog$setSize(500L,400L)
-	dialog$setTitle("Factor Analysis")
-	
-	#add variable selector
-	variableSelector <- new(VariableSelectorWidget)
-	variableSelector$setTitle("data")
-	addComponent(dialog,variableSelector,10,400,850,10)
-	
-	#add a list for the variables
-	variableList<- new(VariableListWidget,variableSelector)
-	variableList$setTitle("variables")
-	addComponent(dialog, variableList,100,900,450, 420)
-	
-	#options for transforming the variables
-	transBoxes <- new(CheckBoxesWidget,"Transformation",c("Center","Scale"))
-	addComponent(dialog, transBoxes,500,900,670, 540)
-	transBoxes$setDefaultModel(c("Scale"))
-	
-	#output options
-	outBoxes <- new(CheckBoxesWidget,"Output",c("Summary","Scree Plot"))
-	addComponent(dialog, outBoxes,680,900,850, 540)
-	dialog$setCheckFunction(".factorAnalysisCheckFunction")
-	dialog$setRunFunction(".factorAnalysisRunFunction")
-	return(dialog)
-}
-
 .factorAnalysisCheckFunction <- function(state){
 	#make sure at least two variables are selected
 	if(length(state$variables)<2)
@@ -67,6 +38,37 @@ makeFactorAnalysisDialog <- function(){
 	execute(cmd)
 }
 
+makeFactorAnalysisDialog <- function(){
+	#make dialog
+	dialog <- new(SimpleRDialog)
+	dialog$setSize(500L,400L)
+	dialog$setTitle("Factor Analysis")
+	
+	#add variable selector
+	variableSelector <- new(VariableSelectorWidget)
+	variableSelector$setTitle("data")
+	addComponent(dialog,variableSelector,10,400,850,10)
+	
+	#add a list for the variables
+	variableList<- new(VariableListWidget,variableSelector)
+	variableList$setTitle("variables")
+	addComponent(dialog, variableList,100,900,450, 420)
+	
+	#options for transforming the variables
+	transBoxes <- new(CheckBoxesWidget,"Transformation",c("Center","Scale"))
+	addComponent(dialog, transBoxes,500,900,670, 540)
+	transBoxes$setDefaultModel(c("Scale"))
+	
+	#output options
+	outBoxes <- new(CheckBoxesWidget,"Output",c("Summary","Scree Plot"))
+	addComponent(dialog, outBoxes,680,900,850, 540)
+	dialog$setCheckFunction(toJava(.factorAnalysisCheckFunction))
+	dialog$setRunFunction(toJava(.factorAnalysisRunFunction))
+	return(dialog)
+}
+
+
+
 getFactorAnalysisDialog <- function(){
 	if(!exists(".factorAnalysisDialog")){
 		ex <- as.environment(match("package:DeducerPlugInExample", search()))
@@ -75,6 +77,34 @@ getFactorAnalysisDialog <- function(){
 		assign(".factorAnalysisDialog",.factorAnalysisDialog,ex)		
 	}
 	return(.factorAnalysisDialog)
+}
+
+makeListExampleDialog <-function(){
+	leftList <- new(ListWidget,"Left hand list",c("Item 1","Item 2","Item 3","Item 4"))
+	setSize(leftList,150,210)
+	rightList <- new(ListWidget,"Right hand list")
+	setSize(rightList,150,210)
+	buttons <- new(AddRemoveButtons,leftList,rightList)
+	
+	dialog <- new(SimpleRDialog)
+	dialog$setSize(500L,300L)
+	addComponent(dialog,leftList,10,400,600,450,,,"NONE","NONE")
+	addComponent(dialog,rightList,10,900,600,450,,,"NONE","NONE")
+	addComponent(dialog,buttons,100,600,600,450,"NONE","NONE")
+	
+	runDialog <- function(state) print(state)
+	dialog$setRunFunction(toJava(runDialog))
+	
+	return(dialog)
+}
+
+getListExampleDialog <- function(){
+	if(!exists(".listExampleDialog")){
+		ex <- as.environment(match("package:DeducerPlugInExample", search()))
+		dialog <- makeListExampleDialog()
+		assign(".listExampleDialog",dialog,ex)	
+	}
+	return(.listExampleDialog)
 }
 
 getScatterPlotDialog <- function(){
@@ -97,15 +127,18 @@ getScatterPlotDialog <- function(){
 	deducer.addMenuItem("Factor Analysis",,"getFactorAnalysisDialog()$run()","Example")
 	deducer.addMenuItem("Scatter Plot",,"getScatterPlotDialog()$run()","Example")
 	deducer.addMenuItem("Widget display",,"J('example.ExampleDialog')$run()","Example")
+	deducer.addMenuItem("List Example",,"getListExampleDialog()$run()","Example")
 	if(.windowsGUI){
 		winMenuAdd("Example")
 		winMenuAddItem("Example", "Factor Analysis", "deducer('Factor Analysis')")
 		winMenuAddItem("Example", "Scatter Plot", "deducer('Scatter Plot')")
 		winMenuAddItem("Example", "Widget Display", "deducer('Widget display')")
+		winMenuAddItem("Example", "List Example", "deducer('List Example')")
 	}else if(.jgr){
 		jgr.addMenu("Example")
 		jgr.addMenuItem("Example", "Factor Analysis", "deducer('Factor Analysis')")
 		jgr.addMenuItem("Example", "Scatter Plot", "deducer('Scatter Plot')")
 		jgr.addMenuItem("Example", "Widget Display", "deducer('Widget display')")
+		jgr.addMenuItem("Example", "List Example", "deducer('List Example')")
 	}
 }

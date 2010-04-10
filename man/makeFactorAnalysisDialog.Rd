@@ -1,9 +1,11 @@
 \name{makeFactorAnalysisDialog}
 \alias{makeFactorAnalysisDialog}
+\alias{makeListExampleDialog}
 \alias{.factorAnalysisCheckFunction}
 \alias{.factorAnalysisRunFunction}
 \alias{getFactorAnalysisDialog}
 \alias{getScatterPlotDialog}
+\alias{getListExampleDialog}
 \title{
   makeFactorAnalysisDialog
 }
@@ -13,6 +15,8 @@
 \usage{
 makeFactorAnalysisDialog()
 getFactorAnalysisDialog()
+makeListExampleDialog()
+getListExampleDialog()
 getScatterPlotDialog()
 .factorAnalysisRunFunction(state)
 .factorAnalysisCheckFunction(state)
@@ -27,5 +31,7 @@ getScatterPlotDialog()
  
  .factorAnalysisCheckFunction is called when the "Run" button is pressed. If the dialog passes the
  check, then .factorAnalysisRunFunction is called, which formats and executes the users selections.
+ 
+ see http://www.deducer.org for details
  
  }
